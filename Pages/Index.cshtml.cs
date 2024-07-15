@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,46 +14,21 @@ public class IndexModel : PageModel
         _elasticsearchService = elasticsearchService;
     }
 
-    [BindProperty]
-    public string SearchQuery { get; set; }
-    public List<Article> Articles { get; set; }
+    public IList<Article> Articles { get; set; }
+    public SelectList Titles { get; set; }
+    public string SearchString { get; set; }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(string searchString)
     {
-        if (!await _elasticsearchService.TestConnection())
+        SearchString = searchString;
+
+        var articles = await _elasticsearchService.GetAllArticles();
+
+        if (!string.IsNullOrEmpty(searchString))
         {
-            ModelState.AddModelError(string.Empty, "Cannot connect to Elasticsearch.");
-            Articles = new List<Article>(); // Boþ liste döndürüyoruz ki hata sayfasý oluþmasýn.
+            articles = await _elasticsearchService.SearchArticles(searchString);
         }
-        else
-        {
-            Articles = await _elasticsearchService.GetAllArticles();
-        }
+
+        Articles = articles.ToList();
     }
-
-    
-
-    public async Task<IActionResult> OnPostSearchAsync()
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(SearchQuery))
-            {
-                Articles = await _elasticsearchService.GetAllArticles();
-            }
-            else
-            {
-                Articles = await _elasticsearchService.SearchArticles(SearchQuery);
-            }
-
-            return Page();
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
-            return Page();
-        }
-    }
-
-
 }

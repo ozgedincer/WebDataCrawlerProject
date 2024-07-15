@@ -6,18 +6,18 @@
 
 <h1>Articles</h1>
 
-<form method="post" asp-page-handler="Search">
-    <input type="text" name="SearchQuery" value="@Model.SearchQuery" placeholder="Search" />
-    <button type="submit">Search</button>
+<form method="get">
+    <p>
+        <input type="text" name="searchString" value="@Model.SearchString" />
+        <input type="submit" value="Search" />
+    </p>
 </form>
 
-
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Title</th>
             <th>URL</th>
-            <th>Content</th>
             <th>Timestamp</th>
         </tr>
     </thead>
@@ -26,8 +26,7 @@
         {
             <tr>
                 <td>@article.Title</td>
-                <td><a href="@article.Url">@article.Url</a></td>
-                <td>@article.Content</td>
+                <td><a href="@article.Url" target="_blank">@article.Url</a></td>
                 <td>@article.Timestamp</td>
             </tr>
         }

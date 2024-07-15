@@ -1,8 +1,5 @@
 ﻿using Nest;
 using WebDataCrawler.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 
 public class ElasticsearchService
 {
@@ -12,13 +9,6 @@ public class ElasticsearchService
     {
         _elasticClient = elasticClient;
     }
-
-    public async Task<bool> TestConnection()
-    {
-        var pingResponse = await _elasticClient.PingAsync();
-        return pingResponse.IsValid;
-    }
-
 
     public async Task<List<Article>> GetAllArticles()
     {
@@ -40,7 +30,6 @@ public class ElasticsearchService
                 .MultiMatch(m => m
                     .Fields(f => f
                         .Field(a => a.Title)
-                        .Field(a => a.Content)
                     )
                     .Query(query)
                 )
