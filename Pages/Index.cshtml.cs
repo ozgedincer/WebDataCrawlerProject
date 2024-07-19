@@ -14,7 +14,7 @@ public class IndexModel : PageModel
         _elasticsearchService = elasticsearchService;
     }
 
-    public IList<Article> Articles { get; set; }
+    public List<Article> Articles { get; set; }
     public SelectList Titles { get; set; }
     public string SearchString { get; set; }
 

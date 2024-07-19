@@ -1,34 +1,66 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Sozcu Articles";
 }
 
-<h1>Articles</h1>
-
-<form method="get">
-    <p>
-        <input type="text" name="searchString" value="@Model.SearchString" />
-        <input type="submit" value="Search" />
-    </p>
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>URL</th>
-            <th>Timestamp</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var article in Model.Articles)
-        {
-            <tr>
-                <td>@article.Title</td>
-                <td><a href="@article.Url" target="_blank">@article.Url</a></td>
-                <td>@article.Timestamp</td>
-            </tr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 20px;
         }
-    </tbody>
-</table>
+        .table th {
+            background-color: #f8f9fa; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Articles</h1>
+        
+        <form method="get">
+            <div class="form-group">
+                <input type="text" class="form-control" name="searchString" placeholder="Search Articles" value="@Model.SearchString" />
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Search</button>
+        </form>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>URL</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var article in Model.Articles)
+                    {
+                        <tr>
+                            <td>@article.Title</td>
+                            <td><a href="@article.Url" target="_blank">@article.Url</a></td>
+                            <td>@article.Timestamp</td>
+                        </tr>
+                    }
+                    @if (Model.Articles.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">No articles found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jWr+8+8hddQOwV9O+kgpNbAL6Tf/4QrF2Y" crossorigin="anonymous"></script>
+</body>
+</html>

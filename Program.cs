@@ -2,16 +2,13 @@ using Nest;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Elasticsearch baðlantý ayarlarý
 var settings = new ConnectionSettings(new Uri("http://localhost:9200"))
                 .DefaultIndex("web_crawler");
 
 var client = new ElasticClient(settings);
 
-// Elasticsearch istemcisini DI konteynerine ekleyin
 builder.Services.AddSingleton<IElasticClient>(client);
 
-// ElasticsearchService'yi DI konteynerine ekleyin
 builder.Services.AddSingleton<ElasticsearchService>();
 
 builder.Services.AddRazorPages();
@@ -31,7 +28,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-// Middleware to log exceptions
 app.Use(async (context, next) =>
 {
     try
